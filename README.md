@@ -10,4 +10,4 @@ Aquí iran las instrucciones de uso del programa
 Desarrollado por Roberto Corrales
 
 ##  Licencia
-Aquí iran los datos de la licencia
+Aquí iran los datos de la licencia.
