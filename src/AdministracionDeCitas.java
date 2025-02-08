@@ -12,16 +12,18 @@ public class AdministracionDeCitas {
     Doctor doctor1 = new Doctor("Roberto", "123", "oftalmologo");
     Paciente paciente1 = new Paciente("Gabriel", "123");
 
+
     public void loadUsuarios() {
-        try(BufferedReader br = new BufferedReader(new FileReader(fileUsuarios)) ) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileUsuarios))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if(data.length == 2){
-                    if(data[0].trim() == "doctor") {
-                        usuarios.add(doctor1);
+                if (data.length == 6) {
+                    if (data[0].trim().equals("Doctor")) {
+                        usuarios.add(new Doctor(Integer.parseInt(data[1]), data[2], data[3], Boolean.parseBoolean(data[4]) , data[5]));
+
                     } else {
-                        usuarios.add(paciente1);
+                        usuarios.add(new Paciente(Integer.parseInt(data[1]), data[2], data[3], Boolean.parseBoolean(data[4])));
                     }
                 }
             }
@@ -31,12 +33,12 @@ public class AdministracionDeCitas {
     }
 
     public void loadCitas() {
-        try(BufferedReader br = new BufferedReader(new FileReader(fileCitas)) ) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileCitas))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if(data.length == 2){
-                    citas.add(new Cita( "12/10/2025","12:00", "motivo", doctor1.getId(), paciente1.getId())  );
+                if (data.length == 2) {
+                    citas.add(new Cita("12/10/2025", "12:00", "motivo", doctor1.getId(), paciente1.getId()));
                 }
             }
         } catch (IOException e) {
@@ -44,25 +46,26 @@ public class AdministracionDeCitas {
         }
     }
 
-    public void saveUsuarios(){
+    public void saveUsuarios() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUsuarios))) {
-            for (Usuario usuario : usuarios){
-                String tipoDeUsuario = usuario.getClass().toString() == "Doctor" ? "Doctor" : "Paciente";
+            for (Usuario usuario : usuarios) {
+                String tipoDeUsuario = "Paciente";
                 String especialidad = "";
                 if (usuario instanceof Doctor) {
                     Doctor doctor = (Doctor) usuario;
-                    doctor.getEspecialidad().toString();
+                    especialidad = doctor.getEspecialidad();
+                    tipoDeUsuario = "Doctor";
                 } else {
-                    especialidad = "";
+                    especialidad = "ninguna";
                 }
 
                 bw.write(
                         tipoDeUsuario + "," +
-                        usuario.getId() + "," +
-                        usuario.getNombre() + "," +
-                        usuario.getContrasena() + "," +
-                        usuario.esAdmin() + "," +
-                        especialidad
+                                usuario.getId() + "," +
+                                usuario.getNombre() + "," +
+                                usuario.getContrasena() + "," +
+                                usuario.esAdmin() + "," +
+                                especialidad
                 );
                 bw.newLine();
             }
@@ -71,15 +74,15 @@ public class AdministracionDeCitas {
         }
     }
 
-    public void saveCitas(){
+    public void saveCitas() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileCitas))) {
-            for (Cita cita : citas){
+            for (Cita cita : citas) {
                 bw.write(
-                                cita.getId() + "," +
-                                cita.getDoctorID() +  "," +
+                        cita.getId() + "," +
+                                cita.getDoctorID() + "," +
                                 cita.getPacienteID() + "," +
-                                cita.getFecha() +  "," +
-                                cita.getHora() +  "," +
+                                cita.getFecha() + "," +
+                                cita.getHora() + "," +
                                 cita.getMotivo()
                 );
                 bw.newLine();
@@ -90,6 +93,7 @@ public class AdministracionDeCitas {
     }
 
     public void iniciarSesion() throws IOException {
+
         String nombre = "";
         String contrasena = "";
 
@@ -109,7 +113,9 @@ public class AdministracionDeCitas {
         System.out.println("¡Bienvenido " + nombre + "!");
     }
 
-
+    public void printUsuarios(){
+        System.out.println(usuarios);
+    }
 
     public void altaDoctor(){
         System.out.println("Crear un doctor");
@@ -166,6 +172,8 @@ public class AdministracionDeCitas {
     public static void main(String[] args) throws IOException {
 
         AdministracionDeCitas programa = new AdministracionDeCitas();
+        programa.loadUsuarios();
+        programa.printUsuarios();
 
         programa.iniciarSesion();
 
