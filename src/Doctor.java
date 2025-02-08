@@ -5,4 +5,8 @@ public class Doctor extends  Usuario {
         super(nombre, contrasena );
         this.especialidad = especialidad;
     }
+
+    public String getEspecialidad() {
+        return especialidad;
+    }
 }
