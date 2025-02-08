@@ -1,5 +1,19 @@
 public class AdministracionDeCitas {
 
+    Doctor doctor = new Doctor("Roberto", "123", "oftalmologo");
+
+    public void crearDoctor(){
+        System.out.println("Crear un doctor");
+    }
+
+    public void crearPaciente() {
+        System.out.println("Crear un paciente");
+    }
+
+    public void crearAdministrador(Usuario usuario){
+        System.out.println("Dar privilegios de administrador");
+    }
+
     public boolean esUsuarioValido (String usuario, String contrasena){
         System.out.println("Aqui validamos al usuario");
         return true;
@@ -27,12 +41,11 @@ public class AdministracionDeCitas {
         mostrarEspecialidades();
         String especialidad = "oftalmologo";
         mostrarDoctores(especialidad);
-        Doctor doctor = new Doctor();
         boolean disponible;
         do {
             String horario = "12:00 pm";
             disponible = hayDisponibilidad(doctor, horario);
-        } while (disponible == false);
+        } while (!disponible);
         confirmarCita();
     }
 
