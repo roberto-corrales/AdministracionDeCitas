@@ -1,18 +1,51 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class AdministracionDeCitas {
+
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     Doctor doctor = new Doctor("Roberto", "123", "oftalmologo");
 
-    public void crearDoctor(){
+    public void iniciarSesion() throws IOException {
+        String nombre = "";
+        String contrasena = "";
+
+        boolean esAdmin;
+        boolean esUsuarioValido;
+        do {
+            System.out.println("Ingresa tu nombre");
+            nombre = br.readLine();
+            System.out.println("Ingresa tu contraseña");
+            contrasena = br.readLine();
+            esUsuarioValido = esUsuarioValido(nombre, contrasena);
+            if (!esUsuarioValido) {
+                System.out.println("Tus credenciales no son válidas, intenta de nuevo.");
+            }
+
+        } while (!esUsuarioValido);
+        System.out.println("¡Bienvenido " + nombre + "!");
+    }
+
+
+
+    public void altaDoctor(){
         System.out.println("Crear un doctor");
     }
 
-    public void crearPaciente() {
+    public void altaPaciente() {
         System.out.println("Crear un paciente");
     }
 
-    public void crearAdministrador(Usuario usuario){
+    public void hacerAdministrador(Usuario usuario){
         System.out.println("Dar privilegios de administrador");
     }
+
+    public void removerAdministrador(Usuario usuario){
+        System.out.println("Eliminar privilegios de administrador");
+    }
+
 
     public boolean esUsuarioValido (String usuario, String contrasena){
         System.out.println("Aqui validamos al usuario");
@@ -37,7 +70,7 @@ public class AdministracionDeCitas {
     }
 
     public void crearCita(){
-
+        System.out.println("Iniciando flujo de Creacion de cita");
         mostrarEspecialidades();
         String especialidad = "oftalmologo";
         mostrarDoctores(especialidad);
@@ -49,8 +82,13 @@ public class AdministracionDeCitas {
         confirmarCita();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
         AdministracionDeCitas programa = new AdministracionDeCitas();
+
+        programa.iniciarSesion();
+
+
         programa.crearCita();
     }
 
