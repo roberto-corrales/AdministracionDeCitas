@@ -6,7 +6,7 @@ public class AdministracionDeCitas {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private final String fileUsuarios = "usuarios.txt";
     private final String fileCitas = "citas.txt";
-    private final HashSet<Usuario> usuarios = new HashSet<Usuario>();
+    private final HashSet<Usuario> usuarios = new HashSet<>();
     private final HashSet<Cita> citas = new HashSet<>();
 
     Doctor doctor1 = new Doctor("Roberto", "123", "oftalmologo");
@@ -50,7 +50,7 @@ public class AdministracionDeCitas {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUsuarios))) {
             for (Usuario usuario : usuarios) {
                 String tipoDeUsuario = "Paciente";
-                String especialidad = "";
+                String especialidad ;
                 if (usuario instanceof Doctor) {
                     Doctor doctor = (Doctor) usuario;
                     especialidad = doctor.getEspecialidad();
@@ -94,8 +94,8 @@ public class AdministracionDeCitas {
 
     public void iniciarSesion() throws IOException {
 
-        String nombre = "";
-        String contrasena = "";
+        String nombre;
+        String contrasena;
 
         boolean esAdmin;
         boolean esUsuarioValido;
