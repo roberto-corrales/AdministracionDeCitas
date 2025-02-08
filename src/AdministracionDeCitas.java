@@ -111,6 +111,8 @@ public class AdministracionDeCitas {
 
         } while (!esUsuarioValido);
         System.out.println("¡Bienvenido " + nombre + "!");
+        System.out.println("");
+
     }
 
     public void printUsuarios(){
@@ -135,8 +137,15 @@ public class AdministracionDeCitas {
 
 
     public boolean esUsuarioValido (String usuario, String contrasena){
-        System.out.println("Aqui validamos al usuario");
-        return true;
+        for (Usuario user : usuarios){
+            String nombre = user.getNombre();
+            String pw = user.getContrasena();
+            if (nombre.equals(usuario) && pw.equals(contrasena)  ){
+                return  true;
+            }
+        }
+        System.out.println("Tus credenciales no son validas, intenta de nuevo");
+        return false;
     }
 
     public void mostrarEspecialidades() {
