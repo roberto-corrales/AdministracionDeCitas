@@ -9,22 +9,21 @@ public class AdministracionDeCitas {
     private final HashSet<Usuario> usuarios = new HashSet<>();
     private final HashSet<Cita> citas = new HashSet<>();
 
-    Doctor doctor1 = new Doctor("Roberto", "123", "oftalmologo");
-    Paciente paciente1 = new Paciente("Gabriel", "123");
+    Usuario doctor1 = new Usuario("Roberto", "123", true, "oftalmologo");
+    Usuario paciente1 = new Usuario("Gabriel", "123");
+
 
 
     public void loadUsuarios() {
+        usuarios.add(doctor1);
+        usuarios.add(paciente1);
         try (BufferedReader br = new BufferedReader(new FileReader(fileUsuarios))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length == 6) {
-                    if (data[0].trim().equals("Doctor")) {
-                        usuarios.add(new Doctor(Integer.parseInt(data[1]), data[2], data[3], Boolean.parseBoolean(data[4]) , data[5]));
+                if (data.length == 7) {
+                    usuarios.add(new Usuario(Integer.parseInt(data[0]), data[1], data[2], Boolean.parseBoolean(data[3]), Boolean.parseBoolean(data[4]), data[5]));
 
-                    } else {
-                        usuarios.add(new Paciente(Integer.parseInt(data[1]), data[2], data[3], Boolean.parseBoolean(data[4])));
-                    }
                 }
             }
         } catch (IOException e) {
@@ -49,24 +48,18 @@ public class AdministracionDeCitas {
     public void saveUsuarios() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUsuarios))) {
             for (Usuario usuario : usuarios) {
-                String tipoDeUsuario = "Paciente";
-                String especialidad ;
-                if (usuario instanceof Doctor) {
-                    Doctor doctor = (Doctor) usuario;
-                    especialidad = doctor.getEspecialidad();
-                    tipoDeUsuario = "Doctor";
-                } else {
-                    especialidad = "ninguna";
-                }
 
                 bw.write(
-                        tipoDeUsuario + "," +
+
                                 usuario.getId() + "," +
                                 usuario.getNombre() + "," +
                                 usuario.getContrasena() + "," +
                                 usuario.esAdmin() + "," +
-                                especialidad
+                                usuario.esDoctor() + "," +
+                                usuario.getEspecialidad()
+
                 );
+
                 bw.newLine();
             }
         } catch (IOException e) {
@@ -105,9 +98,7 @@ public class AdministracionDeCitas {
             System.out.println("Ingresa tu contraseña");
             contrasena = br.readLine();
             esUsuarioValido = esUsuarioValido(nombre, contrasena);
-            if (!esUsuarioValido) {
-                System.out.println("Tus credenciales no son válidas, intenta de nuevo.");
-            }
+
 
         } while (!esUsuarioValido);
         System.out.println("¡Bienvenido " + nombre + "!");
@@ -156,7 +147,7 @@ public class AdministracionDeCitas {
         System.out.println("Muestra los doctores de la especialidad elegida");
     }
 
-    public boolean hayDisponibilidad (Doctor doctor, String hora) {
+    public boolean hayDisponibilidad (Usuario doctor, String hora) {
         System.out.println("Validamos si hay disponibilidad con este doctor en esta hora");
         return true;
     }
@@ -171,16 +162,18 @@ public class AdministracionDeCitas {
         String especialidad = "oftalmologo";
         mostrarDoctores(especialidad);
         boolean disponible;
+        /*
         do {
             String horario = "12:00 pm";
-            disponible = hayDisponibilidad(doctor1, horario);
+            disponible = hayDisponibilidad(Usuario, horario);
         } while (!disponible);
-        confirmarCita();
+        confirmarCita();*/
     }
 
     public static void main(String[] args) throws IOException {
 
         AdministracionDeCitas programa = new AdministracionDeCitas();
+
         programa.loadUsuarios();
         programa.printUsuarios();
 

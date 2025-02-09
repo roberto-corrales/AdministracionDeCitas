@@ -1,2 +1,0 @@
-Doctor,1,Roberto,123,false,oftalmologo
-Paciente,1,Gabriel,123,false,ninguna
