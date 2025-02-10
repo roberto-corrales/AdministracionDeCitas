@@ -32,7 +32,7 @@ public class AdministracionDeCitas {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data.length == 2) {
-                    citas.add(new Cita("12/10/2025", "12:00", "motivo", "Roberto", "Gabriel"));
+                    //citas.add(new Cita("12/10/2025", "12:00", "motivo", "Roberto", "Gabriel"));
                 }
             }
         } catch (IOException e) {
@@ -66,11 +66,9 @@ public class AdministracionDeCitas {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileCitas))) {
             for (Cita cita : citas) {
                 bw.write(
-                        cita.getId() + "," +
                                 cita.getNombreDoctor() + "," +
                                 cita.getNombrePaciente() + "," +
-                                cita.getFecha() + "," +
-                                cita.getHora() + "," +
+                                cita.getFechaHora() + "," +
                                 cita.getMotivo()
                 );
                 bw.newLine();
@@ -96,7 +94,7 @@ public class AdministracionDeCitas {
                 String contrasena = usuario.getContrasena();
                 if (nombre.equals(nombreIngresado) && contrasena.equals(contrasenaIngresada)  ){
                     System.out.println("¡Bienvenido " + nombreIngresado + "!");
-                    System.out.println("");
+                    System.out.println();
                     return  usuario;
 
                 }
@@ -202,12 +200,7 @@ public class AdministracionDeCitas {
         String especialidad = "oftalmologo";
         mostrarDoctores(especialidad);
         boolean disponible;
-        /*
-        do {
-            String horario = "12:00 pm";
-            disponible = hayDisponibilidad(Usuario, horario);
-        } while (!disponible);
-        confirmarCita();*/
+
     }
 
     public static void main(String[] args) throws IOException {

@@ -1,30 +1,20 @@
+import java.time.LocalDateTime;
+
 public class Cita {
-    private int id;
-    private String fecha;
-    private String hora;
+    private LocalDateTime fechaHora;
     private String motivo;
     private String nombreDoctor;
     private String nombrePaciente;
 
-    public Cita(String fecha, String hora, String motivo, String nombreDoctor, String nombrePaciente) {
-        this.id = 1;
-        this.fecha = fecha;
-        this.hora = hora;
+    public Cita(LocalDateTime fechaHora, String motivo, String nombreDoctor, String nombrePaciente) {
+        this.fechaHora = fechaHora;
         this.motivo = motivo;
         this.nombreDoctor = nombreDoctor;
         this.nombrePaciente = nombrePaciente;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public String getHora() {
-        return hora;
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
     }
 
     public String getMotivo() {
