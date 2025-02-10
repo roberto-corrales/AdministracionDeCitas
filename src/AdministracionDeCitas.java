@@ -57,6 +57,7 @@ public class AdministracionDeCitas {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUsuarios))) {
 
             bw.write("Nombre,Contraseña,EsAdmin,EsDoctor,Especialidad");
+            bw.newLine();
             bw.write("Admin,Admin,true,false,Ninguna");
             bw.newLine();
             for (Usuario usuario : usuarios) {
@@ -188,7 +189,9 @@ public class AdministracionDeCitas {
 
     public void removerAdministrador()throws IOException {
         System.out.println("------ Quitar privilegios de administrador -----");
+
         Usuario usuario = buscarUsuario();
+
         if (!usuario.esAdmin()){
             System.out.println(usuario.getNombre() + " actualmente no es administrador.");
         } else {
@@ -221,7 +224,7 @@ public class AdministracionDeCitas {
             } if (pacienteEncontrado) {
                 break;
             } else {
-                System.out.println("No encontre un paciente con este nombre" + nombre);
+                System.out.println("No encontre un paciente con el nombre " + nombre);
             }
         } while (true);
 
@@ -330,7 +333,7 @@ public class AdministracionDeCitas {
         } while (true) ;
 
         citas.add(new Cita(year, mes, dia, hora, motivo, doctores.get(doctorSeleccionado), paciente ));
-        System.out.println("Has elegido una cita con " + doctores.get(doctorSeleccionado) + " en la fecha " + year + "/" + mes + "/" + dia + " a las " + hora + ":00 hrs");
+        System.out.println("Has elegido una cita para " + paciente + " con " + doctores.get(doctorSeleccionado) + " en la fecha " + year + "/" + mes + "/" + dia + " a las " + hora + ":00 hrs");
         saveCitas();
 
 
