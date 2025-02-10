@@ -1,3 +1,4 @@
+Nombre,Contraseña,EsAdmin,EsDoctor,Especialidad
 Admin,Admin,true,false,ninguna
 Janai,978,false,false,ninguna
 Gabriel,123,false,true,Oftalmología

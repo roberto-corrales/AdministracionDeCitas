@@ -13,10 +13,18 @@ public class AdministracionDeCitas {
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileUsuarios))) {
             String line;
+            int counter = 1;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
+
                 if (data.length == 5) {
+                    if (counter == 1) {
+                        counter++;
+                        continue;
+                    }
                     usuarios.add(new Usuario(data[0], data[1], Boolean.parseBoolean(data[2]), Boolean.parseBoolean(data[3]), data[4]));
+                    counter++;
+
                 }
 
             }
@@ -42,7 +50,9 @@ public class AdministracionDeCitas {
 
     public void saveUsuarios() {
 
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUsuarios))) {
+            bw.write("Nombre,Contraseña,EsAdmin,EsDoctor,Especialidad");
             for (Usuario usuario : usuarios) {
 
                 bw.write(
@@ -64,6 +74,7 @@ public class AdministracionDeCitas {
 
     public void saveCitas() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileCitas))) {
+
             for (Cita cita : citas) {
                 bw.write(
                                 cita.getNombreDoctor() + "," +
