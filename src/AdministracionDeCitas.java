@@ -15,11 +15,12 @@ public class AdministracionDeCitas {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length == 6) {
-                    usuarios.add(new Usuario(Integer.parseInt(data[0]), data[1], data[2], Boolean.parseBoolean(data[3]), Boolean.parseBoolean(data[4]), data[5]));
-
+                if (data.length == 5) {
+                    usuarios.add(new Usuario(data[0], data[1], Boolean.parseBoolean(data[2]), Boolean.parseBoolean(data[3]), data[4]));
                 }
+
             }
+            System.out.println("Base de datos de " + usuarios.size() + " usuarios cargados correctemente.");
         } catch (IOException e) {
             System.out.println("No se pudo cargar la lista de usuarios. ");
         }
@@ -31,7 +32,7 @@ public class AdministracionDeCitas {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data.length == 2) {
-                    citas.add(new Cita("12/10/2025", "12:00", "motivo", 1, 2));
+                    citas.add(new Cita("12/10/2025", "12:00", "motivo", "Roberto", "Gabriel"));
                 }
             }
         } catch (IOException e) {
@@ -46,7 +47,6 @@ public class AdministracionDeCitas {
 
                 bw.write(
 
-                                usuario.getId() + "," +
                                 usuario.getNombre() + "," +
                                 usuario.getContrasena() + "," +
                                 usuario.esAdmin() + "," +
@@ -67,8 +67,8 @@ public class AdministracionDeCitas {
             for (Cita cita : citas) {
                 bw.write(
                         cita.getId() + "," +
-                                cita.getDoctorID() + "," +
-                                cita.getPacienteID() + "," +
+                                cita.getNombreDoctor() + "," +
+                                cita.getNombrePaciente() + "," +
                                 cita.getFecha() + "," +
                                 cita.getHora() + "," +
                                 cita.getMotivo()
@@ -95,7 +95,6 @@ public class AdministracionDeCitas {
                 String nombre = usuario.getNombre();
                 String contrasena = usuario.getContrasena();
                 if (nombre.equals(nombreIngresado) && contrasena.equals(contrasenaIngresada)  ){
-                    System.out.println("Tu numero de usuario es " + usuario.getId());
                     System.out.println("¡Bienvenido " + nombreIngresado + "!");
                     System.out.println("");
                     return  usuario;
@@ -110,18 +109,39 @@ public class AdministracionDeCitas {
 
     }
 
-
-
     public void printUsuarios(){
         System.out.println(usuarios);
     }
 
-    public void altaDoctor(){
-        System.out.println("Crear un doctor");
+    public void altaDoctor() throws IOException {
+        System.out.println("----------Dar de alta un doctor ------------");
+        System.out.println("Por favor, ingresa el nombre del doctor");
+        String nombre = br.readLine();
+        System.out.println("A continuación, ingresa la contraseña");
+        String contrasena = br.readLine();
+        System.out.println("Para finalizar, ingresa la especialidad del doctor");
+        String especialidad = br.readLine();
+
+        usuarios.add(new Usuario(nombre, contrasena, especialidad));
+        saveUsuarios();
+
+        System.out.println("Se ha agredado exitosamente a " + nombre + "a la base de datos.");
+        System.out.println();
+
     }
 
-    public void altaPaciente() {
-        System.out.println("Crear un paciente");
+    public void altaPaciente() throws IOException {
+        System.out.println("----------Dar de alta un paciente ------------");
+        System.out.println("Por favor, ingresa el nombre del paciente");
+        String nombre = br.readLine();
+        System.out.println("A continuación, ingresa la contraseña");
+        String contrasena = br.readLine();
+
+        usuarios.add(new Usuario(nombre, contrasena));
+        saveUsuarios();
+
+        System.out.println("Se ha agredado exitosamente a " + nombre + "a la base de datos.");
+        System.out.println();
     }
 
     public void hacerAdministrador(Usuario usuario){
@@ -176,23 +196,23 @@ public class AdministracionDeCitas {
         boolean esOpcionValida;
 
         do {
-            System.out.println("Selecciona una opción del siguiente menu:");
-            if (usuario.esAdmin){
+            System.out.println("------------ Menú principal -------------");
+            System.out.println("Selecciona una opción del siguiente menú:");
+            System.out.println("C. Agendar una cita");
+            if (usuario.esAdmin()){
                 System.out.println("D. Agregar doctor a la base de datos");
                 System.out.println("P. Agregar paciente a la base de datos");
                 System.out.println("A. Dar privilegios de administrador");
                 System.out.println("R. Remover privilegios de administrador");
                 System.out.println("X. Salir del programa");
-                } else {
-                    System.out.println("Agendar una cita");
                 }
 
             String opcionSeleccionada = br.readLine().substring(0,1).toUpperCase();
 
             switch (opcionSeleccionada) {
                 case "C" -> System.out.println("Crear una cita");
-                case "D" -> System.out.println("Agregar un doctor");
-                case "P" -> System.out.println("Agregar un paciente");
+                case "D" -> programa.altaDoctor();
+                case "P" -> programa.altaPaciente();
                 case "A" -> System.out.println("Dar privilegios de administrador");
                 case "R" -> System.out.println("Eliminar privilegios de administrador");
                 case "X" -> System.out.println("Salir del programa");

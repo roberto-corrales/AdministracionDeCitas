@@ -3,16 +3,16 @@ public class Cita {
     private String fecha;
     private String hora;
     private String motivo;
-    private int doctorID;
-    private int pacienteID;
+    private String nombreDoctor;
+    private String nombrePaciente;
 
-    public Cita(String fecha, String hora, String motivo, int doctorID, int pacienteID) {
+    public Cita(String fecha, String hora, String motivo, String nombreDoctor, String nombrePaciente) {
         this.id = 1;
         this.fecha = fecha;
         this.hora = hora;
         this.motivo = motivo;
-        this.doctorID = doctorID;
-        this.pacienteID  = pacienteID;
+        this.nombreDoctor = nombreDoctor;
+        this.nombrePaciente = nombrePaciente;
     }
 
     public int getId() {
@@ -31,11 +31,11 @@ public class Cita {
         return motivo;
     }
 
-    public int getDoctorID() {
-        return doctorID;
+    public String getNombreDoctor() {
+        return nombreDoctor;
     }
 
-    public int getPacienteID() {
-        return pacienteID;
+    public String getNombrePaciente() {
+        return nombrePaciente;
     }
 }

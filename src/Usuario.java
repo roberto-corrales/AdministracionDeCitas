@@ -1,13 +1,12 @@
 public class   Usuario {
-    protected int id;
-    protected String nombre;
-    protected String contrasena;
-    protected boolean esAdmin;
-    protected boolean esDoctor;
-    protected String especialidad;
 
-    public Usuario(int id, String nombre, String contrasena, boolean esAdmin, boolean esDoctor, String especialidad) {
-        this.id = id;
+    private String nombre;
+    private String contrasena;
+    private boolean esAdmin;
+    private boolean esDoctor;
+    private String especialidad;
+
+    public Usuario( String nombre, String contrasena, boolean esAdmin, boolean esDoctor, String especialidad) {
         this.nombre = nombre;
         this.contrasena = contrasena;
         this.esAdmin = esAdmin;
@@ -15,8 +14,9 @@ public class   Usuario {
         this.especialidad = especialidad;
     }
 
-    public Usuario(String nombre, String contrasena, boolean b) {
-        this.id = 1;
+//    constructor para dar de alta un paciente
+    public Usuario(String nombre, String contrasena) {
+        super();
         this.nombre = nombre;
         this.contrasena = contrasena;
         this.esAdmin = false;
@@ -24,11 +24,12 @@ public class   Usuario {
         this.especialidad = "ninguna";
     }
 
-    public Usuario(String nombre, String contrasena, boolean esDoctor, String especialidad) {
-        this.id = 1;
+    //constructor para dar de alta un doctor
+    public Usuario(String nombre, String contrasena, String especialidad) {
+        super();
         this.nombre = nombre;
-        this.esAdmin = false;
         this.contrasena = contrasena;
+        this.especialidad = especialidad;
 
     }
 
@@ -37,11 +38,7 @@ public class   Usuario {
         return nombre;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getContrasena() {
+       public String getContrasena() {
         return contrasena;
     }
 
@@ -55,5 +52,13 @@ public class   Usuario {
 
     public String getEspecialidad() {
         return especialidad;
+    }
+
+    @Override
+    public String toString() {
+        return  "Usuario: " +
+                (esDoctor ? "Doctor " + nombre + ", " + especialidad : " " + nombre ) +
+                (esAdmin? " tiene privilegios de administrador" : "")
+                ;
     }
 }

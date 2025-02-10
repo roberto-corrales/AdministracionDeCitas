@@ -1,3 +1,5 @@
-0,Admin,Admin,true,false,ninguna
-1,Roberto,123,false,false,ninguna
-2,Gabriel,123,false,true,oftalmologo
+Admin,Admin,true,false,ninguna
+Denisse,987,false,false,Pediatría
+Roberto,123,false,false,ninguna
+Gabriel,123,false,true,Oftalmología
+Janai,978,false,false,ninguna
