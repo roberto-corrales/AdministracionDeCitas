@@ -1,8 +1,10 @@
 Nombre,Contraseña,EsAdmin,EsDoctor,Especialidad
 Admin,Admin,true,false,ninguna
+Denisse,987,false,true,Pediatría
+Roberto,123,false,false,ninguna
+Lilia,123,false,true,Oftalmología
+Javier,123,false,true,Pediatría
+Graciela,456,false,true,Dermatología
 Janai,978,false,false,ninguna
 Gabriel,123,false,true,Oftalmología
-Denisse,987,false,false,Pediatría
 Pantaleon,456,false,false,ninguna
-Roberto,123,false,false,ninguna
-Graciela,456,false,false,Dermatología

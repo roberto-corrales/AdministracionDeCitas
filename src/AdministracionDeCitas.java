@@ -1,5 +1,7 @@
 import java.io.*;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class AdministracionDeCitas {
 
@@ -53,6 +55,7 @@ public class AdministracionDeCitas {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUsuarios))) {
             bw.write("Nombre,Contraseña,EsAdmin,EsDoctor,Especialidad");
+            bw.newLine();
             for (Usuario usuario : usuarios) {
 
                 bw.write(
@@ -188,30 +191,54 @@ public class AdministracionDeCitas {
         saveUsuarios();
     }
 
-    public void mostrarEspecialidades() {
-        System.out.println("Muestra las especialidades");
+    public void agendarCita() throws IOException {
+
+        HashMap<Integer, String> especialidades = new HashMap<>();
+        HashMap<Integer, String> doctores = new HashMap<>();
+        int opcion = 1;
+
+        for (Usuario usuario : usuarios){
+            if (usuario.esDoctor()){
+                if (especialidades.containsValue(usuario.getEspecialidad())){
+                    continue;
+                }
+                especialidades.put(opcion,  usuario.getEspecialidad());
+                opcion++;
+            }
+        }
+        System.out.println("------- Agendar una cita ------");
+        System.out.println("Actualmente contamos con las siguientes especialidades");
+        for (Map.Entry<Integer, String> entry : especialidades.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+        System.out.println();
+        System.out.println("Selecciona alguna de nuestras especialidades");
+        Integer especialidadSeleccionada = Integer.parseInt( br.readLine().substring(0,1));
+
+        System.out.println("Las siguientes opciones estan disponibles en " + especialidades.get(especialidadSeleccionada) + ":");
+        opcion = 1;
+        for (Usuario usuario : usuarios){
+            if(usuario.getEspecialidad().equals(especialidades.get(especialidadSeleccionada))) {
+                doctores.put(opcion, usuario.getNombre());
+                System.out.println(opcion + ": " + usuario.getNombre());
+                opcion++;
+            }
+        }
+
+        System.out.println();
+        System.out.println("Selecciona alguna de nuestras especialidades");
+        Integer doctorSeleccionado = Integer.parseInt( br.readLine().substring(0,1));
+
+        System.out.println("Has seleccionado " + doctores.get(doctorSeleccionado));
+
+
+
+
     }
 
     public void mostrarDoctores(String especialidad) {
         System.out.println("Muestra los doctores de la especialidad elegida");
-    }
-
-    public boolean hayDisponibilidad (Usuario doctor, String hora) {
-        System.out.println("Validamos si hay disponibilidad con este doctor en esta hora");
-        return true;
-    }
-
-    public void confirmarCita(){
-        System.out.println("Confirmar cita");
-    }
-
-    public void crearCita(){
-        System.out.println("Iniciando flujo de Creacion de cita");
-        mostrarEspecialidades();
-        String especialidad = "oftalmologo";
-        mostrarDoctores(especialidad);
-        boolean disponible;
-
     }
 
     public static void main(String[] args) throws IOException {
@@ -241,7 +268,7 @@ public class AdministracionDeCitas {
             String opcionSeleccionada = br.readLine().substring(0,1).toUpperCase();
 
             switch (opcionSeleccionada) {
-                case "1" -> programa.crearCita();
+                case "1" -> programa.agendarCita();
                 case "2" -> programa.altaDoctor();
                 case "3" -> programa.altaPaciente();
                 case "4" -> programa.hacerAdministrador();
@@ -254,9 +281,6 @@ public class AdministracionDeCitas {
         while (true);
         }
 
-
-
-        //programa.crearCita();
     }
 
 

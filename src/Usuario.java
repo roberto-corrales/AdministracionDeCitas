@@ -30,6 +30,7 @@ public class   Usuario {
         this.nombre = nombre;
         this.contrasena = contrasena;
         this.especialidad = especialidad;
+        this.esDoctor = true;
 
     }
 
