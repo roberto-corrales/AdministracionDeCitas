@@ -203,7 +203,7 @@ public class AdministracionDeCitas {
         HashMap<Integer, String> especialidades = new HashMap<>();
         HashMap<Integer, String> doctores = new HashMap<>();
         String paciente ="";
-        String motivo = "";
+        String motivo;
         boolean pacienteEncontrado = false;
         int opcion = 1;
 
@@ -267,7 +267,7 @@ public class AdministracionDeCitas {
         int mes = 0;
         int dia = 0;
         int hora = 0;
-        int minutos = 0;
+
         System.out.println("Elige el año");
         do {
             try {
@@ -336,11 +336,6 @@ public class AdministracionDeCitas {
 
     }
 
-    public void mostrarDoctores(String especialidad) {
-        System.out.println("Muestra los doctores de la especialidad elegida");
-    }
-
-
 
     public static void main(String[] args) throws IOException {
 
@@ -352,7 +347,6 @@ public class AdministracionDeCitas {
         programa.printUsuarios();
 
         Usuario usuario = programa.iniciarSesion();
-        boolean esOpcionValida;
 
         do {
             System.out.println("------------ Menú principal -------------");
