@@ -1,0 +1,3 @@
+0,Admin,Admin,true,false,ninguna
+1,Roberto,123,false,false,ninguna
+2,Gabriel,123,false,true,oftalmologo

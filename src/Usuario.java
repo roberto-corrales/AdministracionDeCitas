@@ -15,7 +15,7 @@ public class   Usuario {
         this.especialidad = especialidad;
     }
 
-    public Usuario(String nombre, String contrasena) {
+    public Usuario(String nombre, String contrasena, boolean b) {
         this.id = 1;
         this.nombre = nombre;
         this.contrasena = contrasena;

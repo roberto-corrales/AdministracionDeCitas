@@ -9,19 +9,13 @@ public class AdministracionDeCitas {
     private final HashSet<Usuario> usuarios = new HashSet<>();
     private final HashSet<Cita> citas = new HashSet<>();
 
-    Usuario doctor1 = new Usuario("Roberto", "123", true, "oftalmologo");
-    Usuario paciente1 = new Usuario("Gabriel", "123");
-
-
-
     public void loadUsuarios() {
-        usuarios.add(doctor1);
-        usuarios.add(paciente1);
+
         try (BufferedReader br = new BufferedReader(new FileReader(fileUsuarios))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length == 7) {
+                if (data.length == 6) {
                     usuarios.add(new Usuario(Integer.parseInt(data[0]), data[1], data[2], Boolean.parseBoolean(data[3]), Boolean.parseBoolean(data[4]), data[5]));
 
                 }
@@ -37,7 +31,7 @@ public class AdministracionDeCitas {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data.length == 2) {
-                    citas.add(new Cita("12/10/2025", "12:00", "motivo", doctor1.getId(), paciente1.getId()));
+                    citas.add(new Cita("12/10/2025", "12:00", "motivo", 1, 2));
                 }
             }
         } catch (IOException e) {
@@ -46,6 +40,7 @@ public class AdministracionDeCitas {
     }
 
     public void saveUsuarios() {
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUsuarios))) {
             for (Usuario usuario : usuarios) {
 
@@ -85,26 +80,37 @@ public class AdministracionDeCitas {
         }
     }
 
-    public void iniciarSesion() throws IOException {
+    public Usuario iniciarSesion() throws IOException {
 
-        String nombre;
-        String contrasena;
+        String nombreIngresado;
+        String contrasenaIngresada;
 
-        boolean esAdmin;
-        boolean esUsuarioValido;
         do {
             System.out.println("Ingresa tu nombre");
-            nombre = br.readLine();
+            nombreIngresado = br.readLine();
             System.out.println("Ingresa tu contraseña");
-            contrasena = br.readLine();
-            esUsuarioValido = esUsuarioValido(nombre, contrasena);
+            contrasenaIngresada = br.readLine();
+
+            for (Usuario usuario : usuarios){
+                String nombre = usuario.getNombre();
+                String contrasena = usuario.getContrasena();
+                if (nombre.equals(nombreIngresado) && contrasena.equals(contrasenaIngresada)  ){
+                    System.out.println("Tu numero de usuario es " + usuario.getId());
+                    System.out.println("¡Bienvenido " + nombreIngresado + "!");
+                    System.out.println("");
+                    return  usuario;
+
+                }
+            }
+            System.out.println("Tus credenciales no son validas, intenta de nuevo");
 
 
-        } while (!esUsuarioValido);
-        System.out.println("¡Bienvenido " + nombre + "!");
-        System.out.println("");
+        } while (true );
+
 
     }
+
+
 
     public void printUsuarios(){
         System.out.println(usuarios);
@@ -124,19 +130,6 @@ public class AdministracionDeCitas {
 
     public void removerAdministrador(Usuario usuario){
         System.out.println("Eliminar privilegios de administrador");
-    }
-
-
-    public boolean esUsuarioValido (String usuario, String contrasena){
-        for (Usuario user : usuarios){
-            String nombre = user.getNombre();
-            String pw = user.getContrasena();
-            if (nombre.equals(usuario) && pw.equals(contrasena)  ){
-                return  true;
-            }
-        }
-        System.out.println("Tus credenciales no son validas, intenta de nuevo");
-        return false;
     }
 
     public void mostrarEspecialidades() {
@@ -172,16 +165,48 @@ public class AdministracionDeCitas {
 
     public static void main(String[] args) throws IOException {
 
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         AdministracionDeCitas programa = new AdministracionDeCitas();
 
         programa.loadUsuarios();
+
         programa.printUsuarios();
 
-        programa.iniciarSesion();
+        Usuario usuario = programa.iniciarSesion();
+        boolean esOpcionValida;
+
+        do {
+            System.out.println("Selecciona una opción del siguiente menu:");
+            if (usuario.esAdmin){
+                System.out.println("D. Agregar doctor a la base de datos");
+                System.out.println("P. Agregar paciente a la base de datos");
+                System.out.println("A. Dar privilegios de administrador");
+                System.out.println("R. Remover privilegios de administrador");
+                System.out.println("X. Salir del programa");
+                } else {
+                    System.out.println("Agendar una cita");
+                }
+
+            String opcionSeleccionada = br.readLine().substring(0,1).toUpperCase();
+
+            switch (opcionSeleccionada) {
+                case "C" -> System.out.println("Crear una cita");
+                case "D" -> System.out.println("Agregar un doctor");
+                case "P" -> System.out.println("Agregar un paciente");
+                case "A" -> System.out.println("Dar privilegios de administrador");
+                case "R" -> System.out.println("Eliminar privilegios de administrador");
+                case "X" -> System.out.println("Salir del programa");
+                default -> System.out.println("La opcion seleccionada no es válida");
+                }
+
+            }
+        while (true);
+        }
 
 
-        programa.crearCita();
+
+        //programa.crearCita();
     }
 
 
-}
+
