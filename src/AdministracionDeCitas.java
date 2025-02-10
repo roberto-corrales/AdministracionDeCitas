@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -41,8 +42,8 @@ public class AdministracionDeCitas {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length == 2) {
-                    //citas.add(new Cita("12/10/2025", "12:00", "motivo", "Roberto", "Gabriel"));
+                if (data.length == 7) {
+                    citas.add(new Cita(Integer.parseInt( data[0]),Integer.parseInt( data[1]), Integer.parseInt(data[2]), Integer.parseInt( data[3]), data[4], data[5], data[6]));
                 }
             }
         } catch (IOException e) {
@@ -76,14 +77,18 @@ public class AdministracionDeCitas {
     }
 
     public void saveCitas() {
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileCitas))) {
 
             for (Cita cita : citas) {
                 bw.write(
-                                cita.getNombreDoctor() + "," +
-                                cita.getNombrePaciente() + "," +
-                                cita.getFechaHora() + "," +
-                                cita.getMotivo()
+                        cita.getYear() + "," +
+                        cita.getMes() + "," +
+                        cita.getDia() + "," +
+                        cita.getHora() + "," +
+                        cita.getMotivo() + "," +
+                        cita.getNombreDoctor() + "," +
+                        cita.getNombrePaciente()
                 );
                 bw.newLine();
             }
@@ -126,7 +131,7 @@ public class AdministracionDeCitas {
     }
 
     public Usuario buscarUsuario() throws IOException {
-        System.out.println("Por favor, ingresa el nombre del doctor");
+        System.out.println("Por favor, ingresa el nombre del usuario");
         String nombre = br.readLine();
         for(Usuario usuario : usuarios) {
             if (usuario.getNombre().equals(nombre)){
@@ -195,18 +200,42 @@ public class AdministracionDeCitas {
 
         HashMap<Integer, String> especialidades = new HashMap<>();
         HashMap<Integer, String> doctores = new HashMap<>();
+        String paciente ="";
+        String motivo = "";
+        boolean pacienteEncontrado = false;
         int opcion = 1;
 
-        for (Usuario usuario : usuarios){
-            if (usuario.esDoctor()){
-                if (especialidades.containsValue(usuario.getEspecialidad())){
+        System.out.println("------- Agendar una cita ------");
+        do {
+            System.out.println("Ingresa el nombre del paciente");
+            String nombre = br.readLine();
+            for (Usuario usuario : usuarios){
+                if (usuario.getNombre().equals(nombre) && !usuario.esDoctor()){
+                    paciente = nombre;
+                    System.out.println(paciente + " existe en la base de datos");
+                    pacienteEncontrado = true;
+                    break;
+                }
+            } if (pacienteEncontrado) {
+                break;
+            } else {
+                System.out.println("No encontre un paciente con este nombre" + nombre);
+            }
+        } while (true);
+
+        System.out.println("¿Cuál es el motivo de la cita?");
+        motivo = br.readLine();
+
+
+        for (Usuario usuario : usuarios) {
+            if (usuario.esDoctor()) {
+                if (especialidades.containsValue(usuario.getEspecialidad())) {
                     continue;
                 }
-                especialidades.put(opcion,  usuario.getEspecialidad());
+                especialidades.put(opcion, usuario.getEspecialidad());
                 opcion++;
             }
         }
-        System.out.println("------- Agendar una cita ------");
         System.out.println("Actualmente contamos con las siguientes especialidades");
         for (Map.Entry<Integer, String> entry : especialidades.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
@@ -214,12 +243,12 @@ public class AdministracionDeCitas {
 
         System.out.println();
         System.out.println("Selecciona alguna de nuestras especialidades");
-        Integer especialidadSeleccionada = Integer.parseInt( br.readLine().substring(0,1));
+        Integer especialidadSeleccionada = Integer.parseInt(br.readLine().substring(0, 1));
 
         System.out.println("Las siguientes opciones estan disponibles en " + especialidades.get(especialidadSeleccionada) + ":");
         opcion = 1;
-        for (Usuario usuario : usuarios){
-            if(usuario.getEspecialidad().equals(especialidades.get(especialidadSeleccionada))) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getEspecialidad().equals(especialidades.get(especialidadSeleccionada))) {
                 doctores.put(opcion, usuario.getNombre());
                 System.out.println(opcion + ": " + usuario.getNombre());
                 opcion++;
@@ -228,11 +257,79 @@ public class AdministracionDeCitas {
 
         System.out.println();
         System.out.println("Selecciona alguna de nuestras especialidades");
-        Integer doctorSeleccionado = Integer.parseInt( br.readLine().substring(0,1));
+        Integer doctorSeleccionado = Integer.parseInt(br.readLine().substring(0, 1));
 
         System.out.println("Has seleccionado " + doctores.get(doctorSeleccionado));
 
+        int year = 0;
+        int mes = 0;
+        int dia = 0;
+        int hora = 0;
+        int minutos = 0;
+        System.out.println("Elige el año");
+        do {
+            try {
+                year = Integer.parseInt(br.readLine());
+            } catch (NumberFormatException | IOException e) {
+                System.out.println("Datos invalidos, intenta de nuevo");
+            }
+            if (year >= Year.now().getValue() && year <= Year.now().getValue() + 1) {
+                break;
+            } else {
+                System.out.println("Año invalido. Solo pueden crearse citas en este año o el proximo");
+            }
+        } while (true) ;
+        System.out.println("Elige el mes");
+        do {
+            try {
+                mes = Integer.parseInt(br.readLine());
+            } catch (NumberFormatException | IOException e) {
+                System.out.println("Datos invalidos, intenta de nuevo");
+            }
+            if (mes >= 1 && mes <= 12) {
+                break;
+            } else {
+                System.out.println("Mes invalido. Selecciona un valor entre 1 y 12");
+            }
+        } while (true) ;
 
+        System.out.println("Elige el dia");
+        do {
+            try {
+                dia = Integer.parseInt(br.readLine());
+            } catch (NumberFormatException | IOException e) {
+                System.out.println("Datos invalidos, intenta de nuevo");
+            }
+            int maxDate = switch (mes) {
+                case 4, 6, 9, 11 -> 20;
+                case 2 -> 28;
+                default -> 31;
+            };
+
+            if (dia >= 1 && dia <= maxDate) {
+                break;
+            } else {
+                System.out.println("Por favor selecciona un dia entre 1 y " + maxDate);
+            }
+        } while (true) ;
+
+        System.out.println("Elige la hora (entre 8 y 17 hrs)");
+        do {
+            try {
+                hora = Integer.parseInt(br.readLine());
+            } catch (NumberFormatException | IOException e) {
+                System.out.println("Datos invalidos, intenta de nuevo");
+            }
+            if (hora >= 8 && hora <= 17) {
+                break;
+            } else {
+                System.out.println("Hora invalida. Selecciona un valor entre las 8 y 17 horas");
+            }
+        } while (true) ;
+
+        citas.add(new Cita(year, mes, dia, hora, motivo, doctores.get(doctorSeleccionado), paciente ));
+        System.out.println("Has elegido una cita con " + doctores.get(doctorSeleccionado) + " en la fecha " + year + "/" + mes + "/" + dia + " a las " + hora + ":00 hrs");
+        saveCitas();
 
 
     }
@@ -247,7 +344,7 @@ public class AdministracionDeCitas {
         AdministracionDeCitas programa = new AdministracionDeCitas();
 
         programa.loadUsuarios();
-
+        programa.loadCitas();
         programa.printUsuarios();
 
         Usuario usuario = programa.iniciarSesion();
