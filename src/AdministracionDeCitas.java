@@ -113,6 +113,17 @@ public class AdministracionDeCitas {
         System.out.println(usuarios);
     }
 
+    public Usuario buscarUsuario() throws IOException {
+        System.out.println("Por favor, ingresa el nombre del doctor");
+        String nombre = br.readLine();
+        for(Usuario usuario : usuarios) {
+            if (usuario.getNombre().equals(nombre)){
+                return usuario;
+            }
+        }
+        return null;
+    }
+
     public void altaDoctor() throws IOException {
         System.out.println("----------Dar de alta un doctor ------------");
         System.out.println("Por favor, ingresa el nombre del doctor");
@@ -125,7 +136,7 @@ public class AdministracionDeCitas {
         usuarios.add(new Usuario(nombre, contrasena, especialidad));
         saveUsuarios();
 
-        System.out.println("Se ha agredado exitosamente a " + nombre + "a la base de datos.");
+        System.out.println("Se ha agredado exitosamente a " + nombre + " a la base de datos.");
         System.out.println();
 
     }
@@ -144,12 +155,28 @@ public class AdministracionDeCitas {
         System.out.println();
     }
 
-    public void hacerAdministrador(Usuario usuario){
-        System.out.println("Dar privilegios de administrador");
+    public void hacerAdministrador() throws IOException {
+        System.out.println("------ Dar privilegios de administrador -----");
+        Usuario usuario = buscarUsuario();
+        if (usuario.esAdmin()){
+            System.out.println(usuario.getNombre() + " actualmente es administrador.");
+        } else {
+            usuario.makeAdmin();
+            System.out.println("¡Listo! " + usuario.getNombre() + " ahora tiene privilegios de administrador" );
+        }
+        saveUsuarios();
     }
 
-    public void removerAdministrador(Usuario usuario){
-        System.out.println("Eliminar privilegios de administrador");
+    public void removerAdministrador()throws IOException {
+        System.out.println("------ Quitar privilegios de administrador -----");
+        Usuario usuario = buscarUsuario();
+        if (!usuario.esAdmin()){
+            System.out.println(usuario.getNombre() + " actualmente no es administrador.");
+        } else {
+            usuario.removeAdmin();
+            System.out.println("¡Listo! Se removieron los privilegios de administrador de " + usuario.getNombre() );
+        }
+        saveUsuarios();
     }
 
     public void mostrarEspecialidades() {
@@ -198,24 +225,24 @@ public class AdministracionDeCitas {
         do {
             System.out.println("------------ Menú principal -------------");
             System.out.println("Selecciona una opción del siguiente menú:");
-            System.out.println("C. Agendar una cita");
+            System.out.println("1. Agendar una cita");
             if (usuario.esAdmin()){
-                System.out.println("D. Agregar doctor a la base de datos");
-                System.out.println("P. Agregar paciente a la base de datos");
-                System.out.println("A. Dar privilegios de administrador");
-                System.out.println("R. Remover privilegios de administrador");
-                System.out.println("X. Salir del programa");
+                System.out.println("2. Agregar doctor a la base de datos");
+                System.out.println("3. Agregar paciente a la base de datos");
+                System.out.println("4. Dar privilegios de administrador");
+                System.out.println("5. Remover privilegios de administrador");
+                System.out.println("9. Salir del programa");
                 }
 
             String opcionSeleccionada = br.readLine().substring(0,1).toUpperCase();
 
             switch (opcionSeleccionada) {
-                case "C" -> System.out.println("Crear una cita");
-                case "D" -> programa.altaDoctor();
-                case "P" -> programa.altaPaciente();
-                case "A" -> System.out.println("Dar privilegios de administrador");
-                case "R" -> System.out.println("Eliminar privilegios de administrador");
-                case "X" -> System.out.println("Salir del programa");
+                case "1" -> programa.crearCita();
+                case "2" -> programa.altaDoctor();
+                case "3" -> programa.altaPaciente();
+                case "4" -> programa.hacerAdministrador();
+                case "5" -> programa.removerAdministrador();
+                case "9" -> System.out.println("Salir del programa");
                 default -> System.out.println("La opcion seleccionada no es válida");
                 }
 

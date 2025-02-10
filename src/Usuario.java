@@ -54,6 +54,14 @@ public class   Usuario {
         return especialidad;
     }
 
+    public void makeAdmin() {
+        this.esAdmin = true;
+    }
+
+    public void removeAdmin() {
+        this.esAdmin = false;
+    }
+
     @Override
     public String toString() {
         return  "Usuario: " +
