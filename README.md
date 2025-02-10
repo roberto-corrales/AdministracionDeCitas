@@ -1,7 +1,9 @@
 # Administración de citas
 
 ## Instalación y configuración
-Aqui iran las instrucciones de instalación y configuración
+Al iniciar el programa, debemos ingresar con el usuario Admin y la contraseña Admin (sensible a mayusculas). Haciendo estoy nos permitira iniciar la sesión y ver el menu. 
+
+Si los archivos citas.txt o usuarios.txt no existen, el sistema automaticamente creará uno al momento de inicializarse. 
 
 ## Uso del programa
 El programa inicia solicitando que el usuario inicie sesión, y hace una validación para saber si es administrador o no. Si el usuario no es administrador, lo lleva directamente a agendar una cita, para lo cual muestra una lista con las especialidades de los doctores registrados en el sistema, para que el usuario pueda elegir la especialidad de su interés. Una vez que el usuario selecciona su opción, el sistema muestra un listado de los doctores de esa especialidad, y pide al usuario que seleccione un doctor, después pregunta una fecha y hora en la que el usuario desea crear la cita, y con esta información el sistema valida si ya existe una cita creada para ese doctor, fecha y hora. Si no existe ninguna cita, continua solicitando al usuario que ingrese el motivo de su consulta, y con esto crea la cita en el sistema. El sistema ofrece la alternativa la opción de crear una nueva cita o salir del sistema.

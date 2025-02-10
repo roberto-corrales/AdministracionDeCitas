@@ -55,7 +55,9 @@ public class AdministracionDeCitas {
 
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileUsuarios))) {
+
             bw.write("Nombre,Contraseña,EsAdmin,EsDoctor,Especialidad");
+            bw.write("Admin,Admin,true,false,Ninguna");
             bw.newLine();
             for (Usuario usuario : usuarios) {
 
@@ -338,6 +340,8 @@ public class AdministracionDeCitas {
         System.out.println("Muestra los doctores de la especialidad elegida");
     }
 
+
+
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -370,7 +374,10 @@ public class AdministracionDeCitas {
                 case "3" -> programa.altaPaciente();
                 case "4" -> programa.hacerAdministrador();
                 case "5" -> programa.removerAdministrador();
-                case "9" -> System.out.println("Salir del programa");
+                case "9" -> {
+                    System.out.println("Saliendo del programa, hasta pronto");
+                    return;
+                }
                 default -> System.out.println("La opcion seleccionada no es válida");
                 }
 
