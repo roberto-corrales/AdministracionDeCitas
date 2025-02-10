@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AdministracionDeCitas:jar">
+    <output-path>$PROJECT_DIR$/out</output-path>
+    <root id="archive" name="AdministracionDeCitas.jar">
+      <element id="module-output" name="AdministracionDeCitas" />
+    </root>
+  </artifact>
+</component>
